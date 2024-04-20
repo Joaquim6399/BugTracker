@@ -1,4 +1,6 @@
-﻿namespace BugTracker.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BugTracker.Models
 {
     public class Ticket
     {
@@ -9,5 +11,8 @@
         public string Priority { get; set; }
         public DateTime CreatedOn { get; set; }
 
+        [ForeignKey("Project")]
+        public int ProjectId { get; set; }
+        public Project Project { get; set; }
     }
 }
