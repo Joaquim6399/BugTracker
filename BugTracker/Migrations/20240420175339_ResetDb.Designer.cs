@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BugTracker.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240420170104_AddTicketsandProjectsTableToDb")]
-    partial class AddTicketsandProjectsTableToDb
+    [Migration("20240420175339_ResetDb")]
+    partial class ResetDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,6 +44,14 @@ namespace BugTracker.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Projects");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Produce nuclear weapons",
+                            Name = "Manhatan P"
+                        });
                 });
 
             modelBuilder.Entity("BugTracker.Models.Ticket", b =>
@@ -65,7 +73,7 @@ namespace BugTracker.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProjectId")
+                    b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -81,18 +89,29 @@ namespace BugTracker.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("Tickets");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "How to split atom",
+                            Priority = "Medium",
+                            ProjectId = 1,
+                            Status = "New",
+                            Title = "Atom splitting"
+                        });
                 });
 
             modelBuilder.Entity("BugTracker.Models.Ticket", b =>
                 {
-                    b.HasOne("BugTracker.Models.Project", null)
-                        .WithMany("ListOfTickets")
-                        .HasForeignKey("ProjectId");
-                });
+                    b.HasOne("BugTracker.Models.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("BugTracker.Models.Project", b =>
-                {
-                    b.Navigation("ListOfTickets");
+                    b.Navigation("Project");
                 });
 #pragma warning restore 612, 618
         }

@@ -10,9 +10,8 @@ namespace BugTracker.Models
         public string Status { get; set; }
         public string Priority { get; set; }
         public DateTime CreatedOn { get; set; }
-
-        [ForeignKey("Project")]
         public int ProjectId { get; set; }
+        [ForeignKey("ProjectId")]
         public Project Project { get; set; }
     }
 }

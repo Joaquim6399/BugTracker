@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BugTracker.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240420171739_AddedForeignKeyToTicketModelAndRemovedListFromProjectModel")]
-    partial class AddedForeignKeyToTicketModelAndRemovedListFromProjectModel
+    [Migration("20240420175507_AddedDateToModelBuilderOnTicketRow")]
+    partial class AddedDateToModelBuilderOnTicketRow
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,6 +44,14 @@ namespace BugTracker.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Projects");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Produce nuclear weapons",
+                            Name = "Manhatan P"
+                        });
                 });
 
             modelBuilder.Entity("BugTracker.Models.Ticket", b =>
@@ -81,6 +89,18 @@ namespace BugTracker.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("Tickets");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedOn = new DateTime(2024, 4, 20, 18, 55, 7, 552, DateTimeKind.Local).AddTicks(3766),
+                            Description = "How to split atom",
+                            Priority = "Medium",
+                            ProjectId = 1,
+                            Status = "New",
+                            Title = "Atom splitting"
+                        });
                 });
 
             modelBuilder.Entity("BugTracker.Models.Ticket", b =>
